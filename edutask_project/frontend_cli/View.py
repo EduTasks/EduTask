@@ -34,15 +34,31 @@ class ViewConsole:
         while True:
             print("\n--- MENÚ ALUMNE ---")
             print("1. Veure Tasques Pendents")
-            print("2. Sortir")
+            print("2. Lliurar Tasca")
+            print("3. Sortir")
             opcio = input("Tria una opció: ")
             
             if opcio == '1':
                 tasques = self.dao.get_tasques()
                 print("\n--- TASQUES PUBLICADES ---")
                 for t in tasques:
-                    print(f"[{t['curso']}] {t['titulo']} - {t['descripcion']}")
+                    # Añadido el ID para que el alumno sepa qué tarea está entregando
+                    print(f"[ID: {t['id']}] [{t['curso']}] {t['titulo']} - {t['descripcion']}")
+                    
             elif opcio == '2':
+                id_tasca = input("Introdueix l'ID de la tasca a lliurar: ")
+                ruta = input("Introdueix la ruta del teu arxiu (ex: el_meu_treball.pdf): ")
+                id_alumne = self.current_user['id'] # Sacamos el ID del alumno logueado
+                
+                print("[*] Pujant arxiu al servidor...")
+                exito = self.dao.lliurar_tasca(id_tasca, id_alumne, ruta)
+                
+                if exito:
+                    print("[+] Tasca enviada i guardada correctament!")
+                else:
+                    print("[-] Hi ha hagut un problema amb l'enviament de la tasca.")
+                    
+            elif opcio == '3':
                 print("Fins aviat!")
                 break
 

@@ -39,3 +39,17 @@ class DaoServer:
         except Exception as e:
             print(f"Error DAO Tasques: {e}")
             return []
+    
+    def crear_entrega(self, id_tarea, id_alumno, ruta_archivo):
+        try:
+            conn = self._get_connection()
+            cursor = conn.cursor()
+            # Guardamos la ruta del archivo en la columna contenido_respuesta
+            sql = "INSERT INTO Entregas (id_tarea, id_alumno, contenido_respuesta) VALUES (%s, %s, %s)"
+            cursor.execute(sql, (id_tarea, id_alumno, ruta_archivo))
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            print(f"Error DAO Entregas: {e}")
+            return False
